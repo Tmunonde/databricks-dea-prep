@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mpho's DEA Prep</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>
+/* Layout: proctored-exam console — slim status bar, single question column, navigator grid beside it on wide screens */
+:root{
+  --bg:#f3f4f6; --panel:#ffffff; --ink:#18212e; --muted:#5b6575; --line:#d9dde4;
+  --accent:#c2410c; --accent-soft:#fdeee5; --navy:#1d2b3f; --navy-ink:#e8edf4;
+  --good:#15803d; --good-soft:#e5f4ea; --bad:#b91c1c; --bad-soft:#fbe9e9; --flag:#a16207; --flag-soft:#fbf3dc;
+  --code-bg:#f6f7f9;
+  --f-display:"IBM Plex Serif",Georgia,serif; --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151d; --panel:#18202b; --ink:#e6e9ee; --muted:#9aa4b3; --line:#2b3544;
+  --accent:#f0773f; --accent-soft:#3a2216; --navy:#0b1017; --navy-ink:#dfe5ee;
+  --good:#4ade80; --good-soft:#15301f; --bad:#f87171; --bad-soft:#3a1a1a; --flag:#facc15; --flag-soft:#33290f;
+  --code-bg:#121922; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151d; --panel:#18202b; --ink:#e6e9ee; --muted:#9aa4b3; --line:#2b3544;
+  --accent:#f0773f; --accent-soft:#3a2216; --navy:#0b1017; --navy-ink:#dfe5ee;
+  --good:#4ade80; --good-soft:#15301f; --bad:#f87171; --bad-soft:#3a1a1a; --flag:#facc15; --flag-soft:#33290f;
+  --code-bg:#121922; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.bar{background:var(--navy);color:var(--navy-ink);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.bar-in{max-width:1120px;margin:0 auto;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-size:17px;letter-spacing:.01em}
+.brand small{font-family:var(--f-body);font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-left:8px}
+.bar .sp{flex:1}
+.timer{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:15px;padding:3px 10px;border:1px solid rgba(255,255,255,.25);border-radius:4px}
+.timer.low{border-color:var(--accent);color:var(--accent)}
+main{max-width:1120px;margin:0 auto;padding-block:28px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:600}
+.lede{color:var(--muted);max-width:62ch;margin:0 0 24px}
+.btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:9px 16px;border-radius:5px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,.opt:focus-visible,.nav-cell:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:28px}
+.mode{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.mode h3{margin:0;font-size:18px}
+.mode p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.mode .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink);max-width:100%}
+.blueprint{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.note{font-size:13px;color:var(--muted);margin-top:14px;max-width:80ch}
+.exam{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;align-items:start}
+@media (max-width:860px){.exam{grid-template-columns:minmax(0,1fr)}}
+.qcard{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:24px;min-width:0}
+.qmeta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:14px}
+.qmeta b{color:var(--ink)}
+.qtext{font-size:16px;margin:0 0 14px;white-space:pre-wrap}
+.qask{font-weight:600;margin:0 0 16px}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:5px;padding:12px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:13px;line-height:1.5;margin:0 0 16px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:12px 14px;cursor:pointer;width:100%}
+.opt:hover{border-color:var(--muted)}
+.opt .k{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-weight:600;font-size:13px}
+.opt .t{min-width:0;overflow-wrap:anywhere}
+.opt .t.code{font-family:var(--f-mono);font-size:13px;white-space:pre-wrap}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel .k{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.right .k{background:var(--good);border-color:var(--good);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt[disabled]{cursor:default}
+.explain{margin-top:16px;border-left:3px solid var(--good);background:var(--code-bg);padding:12px 14px;border-radius:0 5px 5px 0;font-size:14px}
+.explain.miss{border-left-color:var(--bad)}
+.explain b{display:block;margin-bottom:4px}
+.qfoot{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center}
+.qfoot .sp{flex:1}
+.flagbtn.on{background:var(--flag-soft);border-color:var(--flag);color:var(--flag)}
+.side{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px)}
+.navgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:6px;margin:10px 0 14px}
+.nav-cell{font:inherit;font-size:12px;font-variant-numeric:tabular-nums;height:32px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink);cursor:pointer;position:relative}
+.nav-cell.ans{background:var(--navy);color:var(--navy-ink);border-color:var(--navy)}
+.nav-cell.cur{outline:2px solid var(--accent);outline-offset:1px}
+.nav-cell.flag::after{content:"";position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:var(--flag)}
+.nav-cell.ok{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.nav-cell.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.legend{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.confirm{margin-top:12px;padding:12px;border:1px solid var(--accent);border-radius:5px;background:var(--accent-soft);font-size:14px}
+.confirm .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.score{display:flex;gap:28px;flex-wrap:wrap;align-items:baseline;margin:6px 0 24px}
+.big{font-family:var(--f-display);font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.verdict{font-weight:600}
+.verdict.pass{color:var(--good)} .verdict.fail{color:var(--bad)}
+.dombars{display:flex;flex-direction:column;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px;margin-bottom:24px}
+.dom{display:grid;grid-template-columns:minmax(0,1fr) 70px;gap:4px 12px;font-size:14px}
+.dom .track{grid-column:1/-1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.dom .fill{height:100%;background:var(--good)}
+.dom .fill.mid{background:var(--flag)} .dom .fill.lo{background:var(--bad)}
+.dom .pct{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.review{display:flex;flex-direction:column;gap:16px}
+.rv{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px;border-left:4px solid var(--good)}
+.rv.miss{border-left-color:var(--bad)}
+.rv .opts{gap:6px}
+.rv .opt{padding:8px 12px;cursor:default}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.chip{font-size:12px;padding:2px 8px;border-radius:10px;background:var(--code-bg);border:1px solid var(--line);color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-in">
+  <div class="brand">Mpho's DEA Prep<small>Data Engineer Associate · May 2026 blueprint</small></div>
+  <div class="sp"></div>
+  <div id="status" style="font-size:13px;opacity:.85"></div>
+  <div id="timer" class="timer" hidden>90:00</div>
+</div></div>
+
+<main id="app"></main>
+
+<script>
+const DOMAINS={
+ 1:{name:"Databricks Intelligence Platform",w:6,n:3},
+ 2:{name:"Data Ingestion and Loading",w:21,n:9},
+ 3:{name:"Data Transformation and Modeling",w:22,n:10},
+ 4:{name:"Working with Lakeflow Jobs",w:16,n:7},
+ 5:{name:"Implementing CI/CD",w:10,n:5},
+ 6:{name:"Troubleshooting, Monitoring, and Optimization",w:10,n:4},
+ 7:{name:"Governance and Security",w:15,n:7}
+};
+// a = index of correct option in o[]
+const Q=[
+// ---------- Domain 1 ----------
+{d:1,q:"A retail analytics team runs SQL dashboards that business users refresh unpredictably throughout the day. The team wants queries to start in seconds, does not want to manage cluster infrastructure, and wants to pay only while queries are running.",ask:"Which compute option should the data engineer recommend?",
+o:["A serverless SQL warehouse","An all-purpose cluster with a fixed number of workers and auto-termination disabled","Jobs compute created at the start of each dashboard refresh","A single-node all-purpose cluster shared by all business users"],a:0,
+e:"Serverless SQL warehouses start in seconds, scale for concurrent BI users, and are fully managed by Databricks, so the team pays only for usage. Fixed all-purpose clusters bill while idle, jobs compute is for scheduled workloads, and a single-node cluster won't handle many concurrent users."},
+{d:1,q:"A data engineer has a notebook that runs a nightly ETL process. It is currently attached to an all-purpose cluster that the team also uses for interactive development. The manager wants to reduce compute cost for this workload.",ask:"Which change will most directly reduce cost?",
+o:["Increase the auto-termination timeout on the all-purpose cluster","Run the notebook as a Lakeflow Jobs task on jobs compute that terminates when the run completes","Move the notebook to a Pro SQL warehouse","Convert the all-purpose cluster to a single-node cluster"],a:1,
+e:"Jobs compute is billed at a lower rate than all-purpose compute and exists only for the lifetime of the run. All-purpose compute is intended for interactive work. A SQL warehouse can't run a Python notebook ETL workflow in the same way, and single-node doesn't address the higher all-purpose rate."},
+{d:1,q:"A compliance team asks how a Delta table can guarantee that concurrent writers never leave the table in a partially written state, and how previous versions of the table can be queried.",ask:"Which Delta Lake component provides both capabilities?",
+o:["The Parquet data files stored in cloud object storage","The Hive metastore partition registry","The transaction log stored in the table's _delta_log directory","The Spark driver's in-memory query plan cache"],a:2,
+e:"The Delta transaction log records every commit atomically, which provides ACID guarantees. Because each version is recorded in the log, Delta can reconstruct earlier versions for time travel. Parquet files alone have no transactional metadata."},
+{d:1,q:"A data engineer joins a new team and sees the following query in a notebook:\n\nSELECT * FROM finance.reporting.monthly_revenue",ask:"In Unity Catalog, what does each part of the name refer to?",
+o:["workspace.cluster.table","catalog.schema.table","schema.database.table","metastore.catalog.table"],a:1,
+e:"Unity Catalog uses a three-level namespace: catalog.schema.table (or view, volume, function, model). The metastore sits above catalogs and isn't part of the name."},
+{d:1,q:"A bad batch was appended to the Delta table sales.silver.orders at version 42. Downstream reports must be fixed immediately so the table returns to the state it was in before the bad write.",ask:"Which command should the data engineer run?",
+o:["VACUUM sales.silver.orders RETAIN 0 HOURS","DESCRIBE HISTORY sales.silver.orders","RESTORE TABLE sales.silver.orders TO VERSION AS OF 41","OPTIMIZE sales.silver.orders ZORDER BY (order_id)"],a:2,
+e:"RESTORE TABLE rolls the table back to an earlier version using the transaction log. DESCRIBE HISTORY only shows versions, VACUUM deletes old files (and would remove the ability to time travel), and OPTIMIZE only compacts files."},
+// ---------- Domain 2 ----------
+{d:2,q:"A data engineer runs the following command every hour to load CSV files from a Unity Catalog volume into a table:",code:"COPY INTO main.bronze.transactions\nFROM '/Volumes/main/landing/raw/transactions/'\nFILEFORMAT = CSV\nFORMAT_OPTIONS ('header' = 'true')",ask:"What happens to files that were already loaded in a previous run?",
+o:["They are loaded again, producing duplicate rows","They are skipped, because COPY INTO tracks which files have already been loaded","The command fails until the previously loaded files are deleted","They are reloaded only if their schema has changed"],a:1,
+e:"COPY INTO is idempotent: it keeps track of loaded files and skips them on later runs. You can force a reload with COPY_OPTIONS ('force' = 'true')."},
+{d:2,q:"An analyst who only writes SQL needs to load a few thousand JSON files that arrive once a day in cloud object storage into a Unity Catalog table. The solution must not reprocess files that were already loaded.",ask:"Which approach meets these requirements with the least complexity?",
+o:["A scheduled COPY INTO statement","A Python Structured Streaming job using Auto Loader in file notification mode","An INSERT INTO ... SELECT * FROM json.`path` statement scheduled daily","A JDBC connection from a notebook to the storage account"],a:0,
+e:"COPY INTO is a SQL command that incrementally and idempotently loads files, and it fits well for thousands of files. Auto Loader would work but adds complexity that isn't needed at this scale. INSERT INTO ... SELECT reprocesses every file on each run."},
+{d:2,q:"A source system writes millions of small JSON files per day to a cloud storage directory that already holds tens of millions of files. The data engineer uses Auto Loader and notices that discovering new files has become slow and expensive.",ask:"Which change should the data engineer make?",
+o:["Switch Auto Loader to file notification mode so new files are discovered through cloud events instead of directory listing","Replace Auto Loader with COPY INTO","Set spark.sql.shuffle.partitions to a higher value","Run the stream with trigger(once=True) instead of availableNow"],a:0,
+e:"In directory listing mode Auto Loader lists the input path to find new files, which gets costly for very large directories. File notification mode subscribes to cloud storage events, so discovery cost doesn't grow with directory size. COPY INTO would be slower at this volume."},
+{d:2,q:"A data engineer ingests JSON with Auto Loader using the default schema evolution mode. A new field, discount_code, starts appearing in the source files.",code:"(spark.readStream.format(\"cloudFiles\")\n  .option(\"cloudFiles.format\", \"json\")\n  .option(\"cloudFiles.schemaLocation\", \"/Volumes/main/meta/schemas/orders\")\n  .load(\"/Volumes/main/landing/orders/\")\n  .writeStream\n  .option(\"checkpointLocation\", \"/Volumes/main/meta/chk/orders\")\n  .option(\"mergeSchema\", \"true\")\n  .toTable(\"main.bronze.orders\"))",ask:"What is the expected behavior when the new field is encountered?",
+o:["The new field is silently dropped and the stream continues","The stream fails, the schema in the schema location is updated with the new column, and the stream processes the new column after it is restarted","The new field is written to the _rescued_data column and the schema never changes","Auto Loader rewrites all previously ingested files with the new column"],a:1,
+e:"The default mode is addNewColumns. When a new column appears, the stream stops with an error after updating the stored schema. Restarting the stream (for example with job retries) picks up the new column. Production jobs typically set retries for this reason."},
+{d:2,q:"A data engineer must ingest files whose structure changes frequently. The bronze table schema must not change, the stream must not fail, and any unexpected fields must be preserved for later analysis.",ask:"Which Auto Loader configuration meets these requirements?",
+o:["cloudFiles.schemaEvolutionMode = addNewColumns","cloudFiles.schemaEvolutionMode = failOnNewColumns","cloudFiles.schemaEvolutionMode = rescue","cloudFiles.schemaEvolutionMode = none, with no rescued data column"],a:2,
+e:"In rescue mode the schema is never evolved and the stream doesn't fail. Data that doesn't match the schema, including new columns, is captured in the rescued data column (_rescued_data) so nothing is lost."},
+{d:2,q:"A data engineer is configuring Auto Loader to infer the schema of incoming Parquet files. The engineer wants the inferred schema to persist across stream restarts and to track how it changes over time.",ask:"Which option must be set?",
+o:["cloudFiles.schemaLocation","cloudFiles.maxFilesPerTrigger","checkpointLocation on the readStream","cloudFiles.inferColumnTypes"],a:0,
+e:"cloudFiles.schemaLocation tells Auto Loader where to store the inferred schema and its changes over time. The checkpointLocation is set on the write side and tracks stream progress, not the schema."},
+{d:2,q:"A team wants to use Auto Loader for a pipeline that only needs to run once every six hours. They want each run to process all new files that have arrived since the last run and then stop so compute can shut down.",ask:"Which trigger should the data engineer use?",
+o:["trigger(processingTime=\"6 hours\")","trigger(availableNow=True)","trigger(continuous=\"1 second\")","No trigger, using the default micro-batch behavior"],a:1,
+e:"availableNow processes everything available at start time (possibly in several batches) and then stops. Combined with a Lakeflow Jobs schedule, this gives incremental batch ingestion without leaving a cluster running. processingTime keeps the stream running between batches."},
+{d:2,q:"A company wants to ingest data from Salesforce into Unity Catalog. The data engineering team is small and wants Databricks to handle incremental extraction, schema changes, and pipeline management with minimal custom code.",ask:"Which ingestion method should the data engineer use?",
+o:["A Lakeflow Connect managed connector for Salesforce","A custom Python notebook that calls the Salesforce REST API and appends results to a table","Auto Loader pointed at a Salesforce export directory","COPY INTO with FILEFORMAT = SALESFORCE"],a:0,
+e:"Lakeflow Connect managed connectors provide fully managed, incremental ingestion from SaaS applications and databases into Unity Catalog tables. Custom API code works but requires the team to build and maintain extraction, state, and error handling."},
+{d:2,q:"A data engineer needs to read a table from an external PostgreSQL database in a notebook that runs as a scheduled Lakeflow Jobs task. Security policy forbids storing credentials in notebook source code.",ask:"How should the data engineer supply the database password?",
+o:["Store it in a widget default value","Retrieve it at runtime with dbutils.secrets.get from a Databricks secret scope","Hard-code it in a configuration cell and clear the notebook output before committing","Save it in a Delta table and read it before connecting"],a:1,
+e:"Databricks secrets keep credentials out of code and redact their values in notebook output. The JDBC read then passes the secret value via .option(\"password\", ...)."},
+{d:2,q:"A bronze table has a STRING column named raw that contains JSON documents like:\n\n{\"customer\": {\"id\": 17, \"address\": {\"city\": \"Durban\"}}}",ask:"Which Databricks SQL expression extracts the city value directly from the JSON string?",
+o:["raw.customer.address.city","raw:customer.address.city","get_json(raw, 'city')","raw['customer']['address']['city']"],a:1,
+e:"Databricks SQL supports the colon operator to extract fields from JSON strings: raw:customer.address.city. Dot notation without the colon works on STRUCT columns, not on JSON stored as a STRING."},
+{d:2,q:"A data engineer receives a JSON string column payload and a known schema. Downstream transformations need to reference nested fields as typed columns.",ask:"Which PySpark function converts the string into a typed nested column?",
+o:["from_json(col(\"payload\"), schema)","to_json(col(\"payload\"))","explode(col(\"payload\"))","schema_of_json(col(\"payload\"))"],a:0,
+e:"from_json parses a JSON string into a STRUCT (or other complex type) using the supplied schema. to_json does the reverse, schema_of_json only infers a schema string, and explode works on arrays and maps."},
+{d:2,q:"A data engineer needs to incrementally process only the new records appended to the Delta table main.bronze.events in a downstream streaming job.",ask:"Which code reads the table as a streaming source?",
+o:["spark.read.table(\"main.bronze.events\")","spark.readStream.table(\"main.bronze.events\")","spark.readStream.format(\"cloudFiles\").load(\"main.bronze.events\")","spark.table(\"main.bronze.events\").stream()"],a:1,
+e:"spark.readStream.table() treats a Delta table as a streaming source and processes only new data since the last checkpoint. cloudFiles (Auto Loader) reads files in storage, not tables."},
+{d:2,q:"A data engineer must ingest files arriving continuously in cloud storage. Volume is high (millions of files per day), schema may evolve, and the target is a Unity Catalog table.",ask:"Which ingestion method best fits these requirements?",
+o:["COPY INTO scheduled every minute","Auto Loader","Uploading the files with the Create or modify table UI","A Lakeflow Connect managed connector for a SaaS application"],a:1,
+e:"Auto Loader is designed for high-volume, continuous file ingestion with scalable file discovery, schema inference, and schema evolution. COPY INTO suits thousands of files, the UI upload is for small one-off files, and SaaS connectors are for applications rather than raw files."},
+// ---------- Domain 3 ----------
+{d:3,q:"A data engineer has two DataFrames: orders (order_id, customer_id, amount) and customers (customer_id, name). The report must include every order, even orders whose customer_id does not exist in customers.",ask:"Which join produces the required result?",
+o:["orders.join(customers, \"customer_id\", \"inner\")","orders.join(customers, \"customer_id\", \"left\")","customers.join(orders, \"customer_id\", \"left\")","orders.crossJoin(customers)"],a:1,
+e:"A left join keeps all rows from the left DataFrame (orders) and fills customer columns with null where there is no match. An inner join would drop unmatched orders."},
+{d:3,q:"A data engineer joins a 2 TB fact table with a 5 MB dimension table. The Spark UI shows a large shuffle for both sides of the join.",ask:"Which change will most likely remove the shuffle of the large table?",
+o:["Use a broadcast join hint on the dimension table","Increase spark.sql.shuffle.partitions to 2000","Call repartition(1) on the fact table","Cache the fact table before the join"],a:0,
+e:"Broadcasting the small table sends a copy to every executor, so the large table can be joined in place without shuffling. In PySpark: fact.join(broadcast(dim), \"key\")."},
+{d:3,q:"Two tables, us_customers and eu_customers, have identical schemas. A few customers appear in both tables. The analyst needs a combined list in which each customer row appears only once.",ask:"Which SQL operation should the data engineer use?",
+o:["UNION ALL","UNION","INNER JOIN","CROSS JOIN"],a:1,
+e:"UNION combines rows and removes duplicates. UNION ALL keeps every row including duplicates, which is faster but doesn't meet the requirement."},
+{d:3,q:"Table sizes contains 4 rows and table colors contains 25 rows. A data engineer runs:\n\nSELECT * FROM sizes CROSS JOIN colors",ask:"How many rows are returned?",
+o:["25","29","100","4"],a:2,
+e:"A cross join returns the Cartesian product: every row from one table paired with every row from the other, so 4 × 25 = 100."},
+{d:3,q:"A silver table has a column items of type ARRAY<STRING>. Some rows have an empty array or a null value. The data engineer needs one output row per array element, and must also keep rows that have no items (with a null item).",ask:"Which function should be used?",
+o:["explode(items)","explode_outer(items)","flatten(items)","split(items, ',')"],a:1,
+e:"explode creates one row per element but drops rows where the array is null or empty. explode_outer keeps those rows and returns null for the element."},
+{d:3,q:"A bronze table of customer events contains duplicate records caused by source retries. Records are duplicates when they share the same event_id. The data engineer needs to keep one record per event_id when writing to silver.",ask:"Which PySpark code meets this requirement?",
+o:["df.distinct()","df.dropDuplicates([\"event_id\"])","df.groupBy(\"event_id\").count()","df.dropna(subset=[\"event_id\"])"],a:1,
+e:"dropDuplicates with a column subset keeps one row per event_id. distinct() only removes rows that are identical in every column, so retries with different timestamps would remain."},
+{d:3,q:"A data engineer needs to report the number of unique visitors per day across billions of web events. The dashboard tolerates a small margin of error, but the query must be as fast as possible.",ask:"Which aggregate function should be used?",
+o:["count(DISTINCT visitor_id)","approx_count_distinct(visitor_id)","sum(visitor_id)","count(visitor_id)"],a:1,
+e:"approx_count_distinct uses the HyperLogLog++ algorithm to estimate distinct counts with much less memory and shuffle than an exact count(DISTINCT). count(visitor_id) counts non-null rows, not unique visitors."},
+{d:3,q:"A data engineer processes a small dataset of about 50 MB, but the Spark UI shows the aggregation stage running 200 tiny tasks, most of which finish in milliseconds.",ask:"Which configuration change is most appropriate to test first?",
+o:["Lower spark.sql.shuffle.partitions","Increase spark.sql.autoBroadcastJoinThreshold to 10 GB","Increase spark.driver.memory","Increase spark.executor.memory"],a:0,
+e:"spark.sql.shuffle.partitions defaults to 200 and controls the number of partitions after a shuffle. For small data, many tiny tasks add scheduling overhead, so lowering this value (and re-measuring) is the right first test. Adaptive query execution can also coalesce partitions."},
+{d:3,q:"A data engineer wants to prevent Spark from automatically broadcasting any table in a join while troubleshooting a driver memory issue.",ask:"Which configuration accomplishes this?",
+o:["spark.sql.autoBroadcastJoinThreshold = -1","spark.sql.shuffle.partitions = -1","spark.default.parallelism = 0","spark.sql.autoBroadcastJoinThreshold = 10MB"],a:0,
+e:"Setting spark.sql.autoBroadcastJoinThreshold to -1 disables automatic broadcast joins. The default is 10 MB, meaning tables estimated below that size are broadcast."},
+{d:3,q:"A BI team queries an aggregated gold dataset many times per hour. The aggregation over the silver source is expensive, and results only need to reflect source changes as of the most recent refresh.",ask:"Which Unity Catalog object should the data engineer create?",
+o:["A standard view","A materialized view","A temporary view","A streaming table"],a:1,
+e:"A materialized view precomputes and stores results, and refreshes them (incrementally where possible) when updated. A standard view reruns the expensive aggregation on every query. Streaming tables are designed for append-only incremental ingestion rather than complex aggregations."},
+{d:3,q:"A data engineer builds a Lakeflow Spark Declarative Pipeline. Raw JSON files arrive continuously and should be appended to a bronze table, with each file processed exactly once.",ask:"Which dataset type should be used for the bronze table?",
+o:["A materialized view","A streaming table","A standard view","A temporary view"],a:1,
+e:"Streaming tables process each input record once and are ideal for append-only, incremental ingestion such as Auto Loader sources. Materialized views recompute results from their sources rather than appending."},
+{d:3,q:"A data engineer adds the following data quality rule to a Lakeflow Spark Declarative Pipeline:",code:"CREATE OR REFRESH STREAMING TABLE silver_orders (\n  CONSTRAINT valid_amount EXPECT (amount > 0) ON VIOLATION DROP ROW\n)\nAS SELECT * FROM STREAM(bronze_orders)",ask:"What happens to records where amount is 0 or negative?",
+o:["The pipeline update fails","The records are written to the table and a warning is logged","The records are dropped from the target, and the violations are recorded in the pipeline's data quality metrics","The records are moved to a quarantine table automatically"],a:2,
+e:"ON VIOLATION DROP ROW removes invalid records before writing and reports them in data quality metrics. ON VIOLATION FAIL UPDATE stops the update. With no ON VIOLATION clause, invalid records are kept and only counted."},
+{d:3,q:"A bronze table has a quantity column with null values and an order_date column stored as a string in yyyy-MM-dd format. The silver table must contain 0 for missing quantities and a proper DATE type.",ask:"Which PySpark code meets these requirements?",
+o:["df.fillna({\"quantity\": 0}).withColumn(\"order_date\", to_date(\"order_date\", \"yyyy-MM-dd\"))","df.dropna().withColumn(\"order_date\", col(\"order_date\").cast(\"string\"))","df.na.drop(subset=[\"quantity\"]).withColumnRenamed(\"order_date\", \"date\")","df.withColumn(\"quantity\", lit(0)).withColumn(\"order_date\", current_date())"],a:0,
+e:"fillna replaces nulls in the specified column with 0, and to_date converts the string to a DATE using the given format. Dropping rows loses data, and lit(0) would overwrite every quantity."},
+{d:3,q:"A column full_name contains values like \"Thabo Nkosi\". The data engineer needs a new column first_name with only the first word.",ask:"Which expression returns the first name?",
+o:["split(col(\"full_name\"), \" \").getItem(0)","split(col(\"full_name\"), \" \").getItem(1)","substring(col(\"full_name\"), \" \")","explode(col(\"full_name\"))"],a:0,
+e:"split returns an array of substrings, and getItem(0) returns the first element (arrays are zero-indexed)."},
+{d:3,q:"A data engineer must enforce that the silver table customers never contains rows where email is null. Any write that would insert a null email should be rejected.",ask:"Which approach enforces this directly on the Delta table?",
+o:["ALTER TABLE customers ALTER COLUMN email SET NOT NULL","ALTER TABLE customers SET TBLPROPERTIES ('delta.appendOnly' = 'true')","OPTIMIZE customers ZORDER BY (email)","CREATE VIEW customers_clean AS SELECT * FROM customers WHERE email IS NOT NULL"],a:0,
+e:"A NOT NULL constraint on a Delta table causes any write with a null in that column to fail. A CHECK constraint (ALTER TABLE ... ADD CONSTRAINT ... CHECK) works similarly for other rules. A view only hides bad rows; it doesn't stop them being written."},
+// ---------- Domain 4 ----------
+{d:4,q:"A Lakeflow Jobs task that calls an external API occasionally fails due to transient network timeouts. The data engineer wants the task to try again automatically without rerunning the whole job.",ask:"How should the data engineer configure the job?",
+o:["Configure retries with a retry interval on the task","Add a second identical task that depends on the first","Set the job's maximum concurrent runs to 2","Schedule the job to run every five minutes"],a:0,
+e:"Each task can be configured with a number of retries and a minimum interval between retries. Only the failing task is retried, and downstream tasks wait for it."},
+{d:4,q:"A job has a validation task that sets a task value named row_count. If row_count is 0, the job must send a notification and stop; otherwise it must run the transformation task.",ask:"Which task type should the data engineer add after the validation task?",
+o:["An If/else condition task","A For each task","A Run Job task","A SQL alert task"],a:0,
+e:"The If/else condition task evaluates a boolean expression (for example on a task value such as {{tasks.validate.values.row_count}}) and routes execution down the true or false branch."},
+{d:4,q:"A data engineer must run the same ingestion notebook for 40 different regions. The list of regions is produced by an upstream task, and the number of regions changes over time.",ask:"Which Lakeflow Jobs feature should be used?",
+o:["A For each task that iterates over the list and runs the nested notebook task per item","40 separate notebook tasks with hard-coded parameters","A continuous trigger","An If/else condition task"],a:0,
+e:"The For each task loops over an array of inputs (static or from a task value) and runs a nested task for each item, with configurable concurrency. This adapts when the list changes."},
+{d:4,q:"In a Lakeflow Jobs job, task extract computes the latest processed date. The downstream task load needs to read that value.",ask:"Which code should the extract notebook use to pass the value?",
+o:["dbutils.jobs.taskValues.set(key=\"max_date\", value=max_date)","dbutils.widgets.text(\"max_date\", max_date)","spark.conf.set(\"max_date\", max_date)","dbutils.notebook.exit(max_date)"],a:0,
+e:"Task values let a task set small values that downstream tasks read with dbutils.jobs.taskValues.get(taskKey=\"extract\", key=\"max_date\") or reference in parameters. spark.conf settings don't carry across tasks."},
+{d:4,q:"A job has tasks ingest_a and ingest_b that both feed task merge. A cleanup task must run only when at least one of the ingest tasks fails, to alert the team and remove partial files.",ask:"Which Run if dependency condition should the cleanup task use?",
+o:["All succeeded","At least one failed","None failed","All done"],a:1,
+e:"Run if conditions control when a task runs relative to its dependencies. 'At least one failed' runs the task only when one or more upstream tasks failed. 'All done' would run regardless of outcome."},
+{d:4,q:"Partner files are delivered to a Unity Catalog volume at unpredictable times, sometimes several times a day and sometimes not for days. The job that processes them should start as soon as new files land.",ask:"Which trigger type should the data engineer configure?",
+o:["A scheduled trigger every 15 minutes","A file arrival trigger on the volume path","A continuous trigger","A manual trigger"],a:1,
+e:"File arrival triggers start a run when new files appear in a monitored Unity Catalog volume or external location. A schedule would waste runs on days with no data and add latency when files do arrive."},
+{d:4,q:"A downstream reporting job should run only after the upstream team's job has updated the table main.silver.sales. The upstream job's completion time varies by several hours.",ask:"Which trigger best fits this dependency?",
+o:["A table update trigger on main.silver.sales","A scheduled trigger at the latest expected completion time","A file arrival trigger on the table's storage path","A continuous trigger"],a:0,
+e:"Table update triggers start a job when the monitored Unity Catalog tables are updated. This is a data-driven trigger, so the downstream job runs as soon as data is ready without guessing a time."},
+{d:4,q:"A finance report must be generated every weekday at 06:00 local time, regardless of when source data last changed, because it is emailed to executives at a fixed time.",ask:"Which trigger type should the data engineer choose?",
+o:["A scheduled (time-based) trigger with a cron expression and time zone","A file arrival trigger","A table update trigger","A continuous trigger"],a:0,
+e:"When the business requirement is a fixed time, a time-based schedule is the right choice. Data-driven triggers fit when work should start as soon as data is available."},
+{d:4,q:"A data engineer built a Lakeflow Spark Declarative Pipeline and wants it to refresh nightly after a notebook task that prepares reference data.",ask:"How should this be orchestrated?",
+o:["Add a pipeline task to the Lakeflow Jobs job that depends on the notebook task","Call the pipeline from the notebook with %run","Schedule the pipeline independently at the same time as the notebook","Convert the pipeline to a dashboard task"],a:0,
+e:"Lakeflow Jobs supports pipeline tasks. Making the pipeline task depend on the notebook task in the DAG guarantees the order. Separate schedules risk running the pipeline before the reference data is ready."},
+{d:4,q:"In a job with ten tasks, task 6 failed because of a bad configuration value. Tasks 1–5 succeeded and took two hours. The data engineer has fixed the configuration.",ask:"What is the most efficient way to complete the run?",
+o:["Use Repair run to rerun only the failed task and its dependent tasks","Start a new run of the entire job","Delete the job and recreate it","Run tasks 6–10 manually from their notebooks"],a:0,
+e:"Repair run reruns failed (and skipped downstream) tasks within the same job run, reusing the successful results of earlier tasks. This saves time and keeps the run history together."},
+// ---------- Domain 5 ----------
+{d:5,q:"A data engineer is working in a Databricks Git folder connected to the team's repository. They must develop a new feature without changing the main branch and then share the changes for review.",ask:"Which sequence should the data engineer follow?",
+o:["Create a new branch in the Git dialog, make changes, commit and push to the remote, then open a pull request","Edit files on main, commit, and push directly to main","Clone the notebook to the workspace root, edit it, then copy it back","Export the notebook as a DBC archive and email it to the reviewer"],a:0,
+e:"Git folders (formerly Repos) let you create and switch branches, commit, and push from the workspace UI. Changes are then reviewed through a pull request in the Git provider before merging to main."},
+{d:5,q:"A teammate merged new commits to the remote branch that the data engineer has checked out in a Databricks Git folder.",ask:"How does the data engineer bring those changes into the Git folder?",
+o:["Use Pull in the Git dialog","Use Commit & Push","Create a new branch from the old commit","Restore the notebook from revision history"],a:0,
+e:"Pull fetches and merges remote changes into the checked-out branch of the Git folder. Commit & Push sends local changes to the remote."},
+{d:5,q:"A team deploys the same job to dev, test, and prod with Declarative Automation Bundles (formerly Databricks Asset Bundles). Only the target catalog differs between environments.",ask:"How should the data engineer handle the catalog name?",
+o:["Define a bundle variable for the catalog, reference it as ${var.catalog}, and override its value in each target","Maintain three copies of the job YAML, one per environment","Hard-code the prod catalog and edit it manually before each dev deployment","Store the catalog name in a notebook widget default that is changed by hand"],a:0,
+e:"Bundle variables are declared under variables, referenced with ${var.<name>}, and can be overridden per target in databricks.yml (or with --var on the CLI). This lets the same codebase be promoted across environments."},
+{d:5,q:"A data engineer sets mode: development on the dev target in databricks.yml and deploys the bundle.",ask:"Which behavior results from development mode?",
+o:["Deployed resources are prefixed with the developer's name and job schedules and triggers are paused","Resources are deployed with the production service principal","The bundle is validated but nothing is deployed","All job runs are blocked until mode is changed to production"],a:0,
+e:"Development mode prefixes resource names (for example [dev username]) so developers don't collide, and pauses schedules and triggers so dev copies don't run automatically."},
+{d:5,q:"A CI pipeline must check that a bundle's configuration is syntactically correct before deploying it to the test target.",ask:"Which sequence of Databricks CLI commands should the pipeline run?",
+o:["databricks bundle validate, then databricks bundle deploy -t test","databricks bundle deploy -t test, then databricks bundle validate","databricks workspace import, then databricks jobs create","databricks bundle init, then databricks bundle destroy -t test"],a:0,
+e:"bundle validate checks the configuration; bundle deploy -t <target> deploys it to the named target. bundle run can then start a job or pipeline, and bundle destroy removes deployed resources."},
+{d:5,q:"After deploying a bundle to the prod target from CI, the team wants to trigger the deployed job named daily_etl immediately as a smoke test.",ask:"Which command should be used?",
+o:["databricks bundle run -t prod daily_etl","databricks bundle deploy -t prod daily_etl","databricks bundle validate -t prod daily_etl","databricks jobs create daily_etl"],a:0,
+e:"databricks bundle run runs a job or pipeline resource that the bundle defines, in the specified target."},
+{d:5,q:"A team's production jobs are deployed by a CI/CD pipeline. Security requires that production deployments and job runs are not tied to any individual employee's account.",ask:"Which identity should the CI/CD pipeline and production jobs use?",
+o:["A service principal","The account admin's personal access token","A shared user account whose password is stored in the repository","The identity of whichever developer merged the pull request"],a:0,
+e:"Service principals are non-human identities designed for automation. Using one for deployment and run_as avoids dependence on individual users and keeps production permissions controlled."},
+// ---------- Domain 6 ----------
+{d:6,q:"A data engineer opens the Spark UI for a slow stage and sees large values in the Spill (Disk) column for most tasks, while task durations are fairly even.",ask:"What does this indicate, and which change is most appropriate?",
+o:["Partitions are too large for executor memory; increase the number of shuffle partitions or use workers with more memory","The data is skewed on one key; filter out that key","The driver is out of memory; increase spark.driver.memory","The cluster has too many workers; reduce the worker count"],a:0,
+e:"Disk spill means data didn't fit in execution memory, so Spark wrote it to disk. Because durations are even, this isn't skew. Smaller partitions (more shuffle partitions) or more memory per executor reduce spill."},
+{d:6,q:"A data engineer suspects data skew in a join. In the Spark UI stage summary, which observation confirms skew?",ask:"Select the most reliable indicator.",
+o:["The maximum task duration and shuffle read size are far larger than the median values","All tasks have similar duration but the stage is slow","The number of tasks equals spark.sql.shuffle.partitions","The stage shows zero shuffle write"],a:0,
+e:"Skew shows up as a few tasks processing far more data than the rest: max duration and shuffle read size well above the median. Even durations point to a different bottleneck."},
+{d:6,q:"A team lead asks whether a nightly job is getting slower over the past month.",ask:"Where should the data engineer look first?",
+o:["The job's Runs view in Lakeflow Jobs, comparing run durations against previous runs","The cluster event log","The Delta table history of the job's output table","The notebook revision history"],a:0,
+e:"The Lakeflow Jobs runs view shows run history with durations and statuses over time, making it easy to compare the current execution time against historical baselines."},
+{d:6,q:"In the Lakeflow Jobs UI, a run shows task report as Upstream failed.",ask:"What does this status mean?",
+o:["The report task did not run because a task it depends on failed","The report task failed and caused its upstream tasks to fail","The report task is retrying","The report task was cancelled manually"],a:0,
+e:"Upstream failed means the task was skipped because a dependency failed. The DAG view helps identify which upstream task is the real blocker."},
+{d:6,q:"A large Delta table is frequently filtered by customer_id and event_date. Query patterns are changing, and the team wants to adjust clustering keys later without rewriting the table or managing partitions.",ask:"Which feature should the data engineer use?",
+o:["Liquid clustering with CLUSTER BY (customer_id, event_date)","Partitioning by customer_id","ZORDER BY customer_id after every write","Bucketing the table into 64 buckets"],a:0,
+e:"Liquid clustering replaces partitioning and Z-ordering. Clustering keys can be changed with ALTER TABLE ... CLUSTER BY without rewriting existing data, and it handles high-cardinality columns well."},
+{d:6,q:"A team has hundreds of Unity Catalog managed tables and doesn't want to schedule OPTIMIZE and VACUUM jobs for each one.",ask:"Which feature addresses this?",
+o:["Predictive optimization","Auto Loader file notification mode","Delta time travel","Photon"],a:0,
+e:"Predictive optimization automatically identifies Unity Catalog managed tables that benefit from maintenance and runs operations such as OPTIMIZE and VACUUM, removing the need to schedule them manually."},
+{d:6,q:"A notebook fails with a driver out-of-memory error. The failing cell is:",code:"all_rows = spark.table(\"main.silver.clickstream\").collect()",ask:"What is the most likely cause and fix?",
+o:["collect() brings the entire table to the driver; keep processing distributed and write results to a table, or limit the rows collected","Executors lack memory; add more workers","The table has too many small files; run OPTIMIZE","Shuffle partitions are too low; increase spark.sql.shuffle.partitions"],a:0,
+e:"collect() returns every row to the driver, which can exceed driver memory on large tables. Adding workers doesn't help because the driver is the bottleneck."},
+{d:6,q:"Two notebooks attached to the same all-purpose cluster need different versions of the same Python library, and installing one breaks the other.",ask:"Which approach resolves the conflict?",
+o:["Install each version as a notebook-scoped library with %pip install in each notebook","Install both versions as cluster libraries","Restart the cluster before each notebook runs","Add the library to an init script that installs the latest version"],a:0,
+e:"Notebook-scoped libraries installed with %pip are isolated to the notebook session, so each notebook can use its own version without affecting others on the same cluster."},
+// ---------- Domain 7 ----------
+{d:7,q:"A data engineer runs DROP TABLE on a Unity Catalog managed table and, separately, on an external table.",ask:"What happens to the underlying data files?",
+o:["For the managed table the data files are deleted by Unity Catalog; for the external table only the metadata is removed and the files remain","Both tables' data files are deleted immediately","Neither table's data files are deleted","For the external table the files are deleted; for the managed table they remain"],a:0,
+e:"Unity Catalog manages the lifecycle of managed table data, so dropping it removes the data (after a short retention window during which UNDROP is possible). For external tables, Unity Catalog only removes the table definition."},
+{d:7,q:"Data already exists in cloud storage at a path covered by a Unity Catalog external location. Another system continues to write to that path, so Databricks must not manage the file lifecycle.",ask:"Which statement registers the data correctly?",
+o:["CREATE TABLE main.raw.events USING DELTA LOCATION 's3://bucket/events/'","CREATE TABLE main.raw.events AS SELECT * FROM delta.`s3://bucket/events/`","CREATE VIEW main.raw.events AS SELECT * FROM delta.`s3://bucket/events/`","CREATE MANAGED TABLE main.raw.events FROM 's3://bucket/events/'"],a:0,
+e:"Specifying LOCATION creates an external table over the existing data. CTAS would copy the data into a new managed table."},
+{d:7,q:"A team has been using an external table but now wants Unity Catalog to manage the table's storage so it can use features like predictive optimization.",ask:"Which approach converts the table with the least effort?",
+o:["ALTER TABLE ... SET MANAGED","DROP TABLE and re-create it with the same LOCATION","Run OPTIMIZE on the table","Change the external location's credential"],a:0,
+e:"ALTER TABLE ... SET MANAGED converts an external table to a Unity Catalog managed table. Dropping and re-creating with LOCATION would just create another external table."},
+{d:7,q:"The analysts group must be able to query main.sales.orders. They currently have no privileges on the catalog or schema.",ask:"Which set of privileges is required?",
+o:["USE CATALOG on main, USE SCHEMA on main.sales, and SELECT on main.sales.orders","SELECT on main.sales.orders only","ALL PRIVILEGES on main","MODIFY on main.sales.orders"],a:0,
+e:"To read a table in Unity Catalog, a principal needs USE CATALOG on the catalog, USE SCHEMA on the schema, and SELECT on the table. SELECT alone isn't enough."},
+{d:7,q:"A data engineer must give the group data_scientists read access to every current and future table in the schema main.ml.",ask:"Which statement should the data engineer run (assuming USE CATALOG is already granted)?",
+o:["GRANT USE SCHEMA, SELECT ON SCHEMA main.ml TO `data_scientists`","GRANT SELECT ON TABLE main.ml.* TO `data_scientists`","GRANT READ ON SCHEMA main.ml TO `data_scientists`","GRANT OWNERSHIP ON SCHEMA main.ml TO `data_scientists`"],a:0,
+e:"Privileges in Unity Catalog are inherited downward. Granting SELECT on the schema applies to all current and future tables in it. Wildcards like main.ml.* aren't valid grant targets."},
+{d:7,q:"A contractor who was granted SELECT on main.hr.salaries has finished their engagement.",ask:"Which statement removes the access?",
+o:["REVOKE SELECT ON TABLE main.hr.salaries FROM `contractor@example.com`","DROP USER `contractor@example.com` ON main.hr.salaries","GRANT NONE ON TABLE main.hr.salaries TO `contractor@example.com`","ALTER TABLE main.hr.salaries REMOVE `contractor@example.com`"],a:0,
+e:"REVOKE removes a previously granted privilege from a principal. Remember that access can still come from group membership or a privilege on a parent object, so check those too."},
+{d:7,q:"Regional managers should only see rows in main.sales.orders where region matches their region. Members of the admins group should see all rows. The data engineer wants this enforced on the table itself.",ask:"Which approach should be used?",
+o:["Create a SQL UDF that returns a boolean using is_account_group_member, then apply it with ALTER TABLE ... SET ROW FILTER","Create one view per region and grant each manager their view","Add a WHERE clause to every dashboard query","Partition the table by region and grant access per partition"],a:0,
+e:"Row filters attach a boolean SQL function to a table; rows where it returns false are hidden. is_account_group_member() lets the function check the querying user's groups."},
+{d:7,q:"The column ssn in main.hr.employees must show the full value only to members of the hr_admins group; everyone else should see ***-**-****.",ask:"Which approach meets this requirement?",
+o:["Create a masking function and apply it with ALTER TABLE main.hr.employees ALTER COLUMN ssn SET MASK","REVOKE SELECT on the ssn column from all users","Encrypt the column and share the key with hr_admins","Use a row filter on ssn"],a:0,
+e:"Column masks apply a SQL function to a column at query time, returning the real or masked value depending on the user (for example using is_account_group_member('hr_admins'))."},
+{d:7,q:"A company has thousands of tables across many schemas. Any column tagged as PII must be masked for non-privileged users, including in tables created in the future, without attaching a mask to each table individually.",ask:"Which Unity Catalog feature should the data engineer use?",
+o:["Attribute-based access control (ABAC) policies that match governed tags and apply column masks centrally","A column mask added manually to each table","Dynamic views created for each table","Revoking SELECT on every schema"],a:0,
+e:"ABAC policies are defined at the catalog or schema level and apply row filters or column masks automatically to any table or column whose governed tags match, including new tables. This scales far better than per-table masks."},
+{d:7,q:"A data engineer created the table main.finance.ledger and is leaving the team. The finance_engineering group should take responsibility for the table, including the ability to grant privileges on it.",ask:"Which statement should be run?",
+o:["ALTER TABLE main.finance.ledger OWNER TO `finance_engineering`","GRANT ALL PRIVILEGES ON TABLE main.finance.ledger TO `finance_engineering`","GRANT MODIFY ON TABLE main.finance.ledger TO `finance_engineering`","GRANT USE SCHEMA ON SCHEMA main.finance TO `finance_engineering`"],a:0,
+e:"The owner of an object can manage it and grant privileges on it. Transferring ownership to a group ensures continuity when people leave. ALL PRIVILEGES does not include the ability to transfer ownership."}
+];
+Q.forEach((q,i)=>q.id=i);
+
+let S=null; // session state
+const app=document.getElementById('app');
+const timerEl=document.getElementById('timer');
+const statusEl=document.getElementById('status');
+let tick=null;
+
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function el(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(k,v===true?'':v)}for(const k of kids.flat()){if(k==null||k===false)continue;e.append(k.nodeType?k:document.createTextNode(k))}return e}
+const isCode=s=>/[(){}=\[\]`]|^(GRANT|REVOKE|ALTER|CREATE|SELECT|COPY|RESTORE|DESCRIBE|VACUUM|OPTIMIZE|UNION|INNER|CROSS|databricks )/.test(s)&&s.length<160;
+
+function buildItems(pool){
+  return pool.map(q=>{const order=shuffle([0,1,2,3]);return{q,order,pick:null,flag:false}});
+}
+function start(mode,domain){
+  let pool;
+  if(mode==='mock'){
+    pool=[];
+    for(const d in DOMAINS){const qs=shuffle(Q.filter(q=>q.d==d));pool.push(...qs.slice(0,DOMAINS[d].n))}
+    pool=shuffle(pool);
+  }else if(mode==='domain'){
+    pool=shuffle(Q.filter(q=>domain==='all'||q.d==domain));
+  }else{ // missed
+    const missed=store.get('dea_missed',[]);
+    pool=shuffle(Q.filter(q=>missed.includes(q.id)));
+  }
+  S={mode,items:buildItems(pool),i:0,instant:mode!=='mock',end:mode==='mock'?Date.now()+90*60*1000:null,confirm:false};
+  if(S.end){timerEl.hidden=false;clearInterval(tick);tick=setInterval(updTimer,1000);updTimer()}else{timerEl.hidden=true}
+  render();
+}
+function updTimer(){
+  if(!S||!S.end)return;
+  const left=Math.max(0,S.end-Date.now());const m=Math.floor(left/60000),s=Math.floor(left%60000/1000);
+  timerEl.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  timerEl.classList.toggle('low',left<10*60000);
+  if(left<=0){clearInterval(tick);finish()}
+}
+
+function home(){
+  S=null;clearInterval(tick);timerEl.hidden=true;statusEl.textContent='';
+  const missed=store.get('dea_missed',[]);
+  const hist=store.get('dea_hist',[]);
+  const sel=el('select',{id:'dsel','aria-label':'Exam section'},el('option',{value:'all'},'All sections ('+Q.length+' questions)'),...Object.entries(DOMAINS).map(([k,v])=>el('option',{value:k},'Section '+k+': '+v.name+' ('+Q.filter(q=>q.d==k).length+')')));
+  app.replaceChildren(
+    el('h1',{},'Databricks Certified Data Engineer Associate'),
+    el('p',{class:'lede'},'Scenario-based multiple-choice questions written to the May 2026 exam outline: four options, one correct answer, code in SQL where possible and Python otherwise. The mock exam mirrors the real format: 45 questions, 90 minutes, answers revealed only after you submit.'),
+    el('div',{class:'modes'},
+      el('div',{class:'mode'},el('h3',{},'Full mock exam'),el('p',{},'45 questions drawn in the official section proportions, 90-minute timer, mark-for-review, and a section breakdown at the end.'),el('div',{class:'row'},el('button',{class:'btn primary',onclick:()=>start('mock')},'Start mock exam'))),
+      el('div',{class:'mode'},el('h3',{},'Practice by section'),el('p',{},'Untimed. See the correct answer and explanation right after each question.'),el('div',{class:'row'},sel,el('button',{class:'btn',onclick:()=>start('domain',sel.value)},'Practice'))),
+      el('div',{class:'mode'},el('h3',{},'Retry missed questions'),el('p',{},missed.length?missed.length+' question'+(missed.length>1?'s':'')+' you got wrong are saved in this browser. Answer one correctly to clear it.':'Questions you get wrong will collect here so you can drill your weak spots.'),el('div',{class:'row'},el('button',{class:'btn',disabled:!missed.length,onclick:()=>start('missed')},'Retry missed')))
+    ),
+    el('div',{class:'blueprint'},
+      el('h2',{},'Exam blueprint'),
+      el('table',{},el('thead',{},el('tr',{},el('th',{},'Section'),el('th',{style:'text-align:right'},'Weight'),el('th',{style:'text-align:right'},'Mock Qs'),el('th',{style:'text-align:right'},'In bank'))),
+        el('tbody',{},...Object.entries(DOMAINS).map(([k,v])=>el('tr',{},el('td',{},k+'. '+v.name),el('td',{class:'n'},v.w+'%'),el('td',{class:'n'},v.n),el('td',{class:'n'},Q.filter(q=>q.d==k).length))))),
+      hist.length?el('p',{class:'note'},'Last mock scores: '+hist.slice(-5).map(h=>h.pct+'%').join(' · ')):null,
+      el('p',{class:'note'},'Databricks does not publish a pass mark; this simulator uses 70% as a working target. Questions are original practice items, not real exam questions. Verify anything you are unsure of at docs.databricks.com.')
+    )
+  );
+}
+
+function render(){
+  const it=S.items[S.i];
+  if(!it){home();return}
+  const answered=S.items.filter(x=>x.pick!=null).length;
+  statusEl.textContent=answered+' of '+S.items.length+' answered';
+  const q=it.q;const letters='ABCD';
+  const revealed=S.instant&&it.pick!=null;
+  const opts=el('div',{class:'opts',role:'radiogroup','aria-label':'Answer options'},...it.order.map((oi,pos)=>{
+    let cls='opt';
+    if(revealed){if(oi===q.a)cls+=' right';else if(oi===it.pick)cls+=' wrong'}
+    else if(it.pick===oi)cls+=' sel';
+    const txt=q.o[oi];
+    return el('button',{class:cls,role:'radio','aria-checked':String(it.pick===oi),disabled:revealed,onclick:()=>{it.pick=oi;if(S.instant)trackMiss(q.id,oi===q.a);render()}},
+      el('span',{class:'k'},letters[pos]),el('span',{class:'t'+(isCode(txt)?' code':'')},txt));
+  }));
+  const card=el('div',{class:'qcard'},
+    el('div',{class:'qmeta'},el('span',{},'Question ',el('b',{},String(S.i+1)),' of '+S.items.length),el('span',{class:'chip'},'Section '+q.d+': '+DOMAINS[q.d].name)),
+    el('p',{class:'qtext'},q.q),
+    q.code?el('pre',{},q.code):null,
+    el('p',{class:'qask'},q.ask),
+    opts,
+    revealed?el('div',{class:'explain'+(it.pick===q.a?'':' miss')},el('b',{},it.pick===q.a?'Correct.':'Incorrect. The answer is '+letters[it.order.indexOf(q.a)]+'.'),q.e):null,
+    el('div',{class:'qfoot'},
+      el('button',{class:'btn',disabled:S.i===0,onclick:()=>{S.i--;S.confirm=false;render()}},'Previous'),
+      S.instant?null:el('button',{class:'btn flagbtn'+(it.flag?' on':''),'aria-pressed':String(it.flag),onclick:()=>{it.flag=!it.flag;render()}},it.flag?'Marked for review':'Mark for review'),
+      el('span',{class:'sp'}),
+      S.i<S.items.length-1?el('button',{class:'btn primary',onclick:()=>{S.i++;S.confirm=false;render()}},'Next'):
+        el('button',{class:'btn primary',onclick:()=>{if(S.instant)finish();else{S.confirm=true;render()}}},S.instant?'See results':'Submit exam')
+    ),
+    S.confirm?el('div',{class:'confirm'},
+      (()=>{const un=S.items.length-answered,fl=S.items.filter(x=>x.flag).length;return 'Submit now? '+(un?un+' unanswered. ':'All questions answered. ')+(fl?fl+' marked for review.':'')})(),
+      el('div',{class:'row'},el('button',{class:'btn primary',onclick:finish},'Submit'),el('button',{class:'btn',onclick:()=>{S.confirm=false;render()}},'Keep working'))):null
+  );
+  const side=el('aside',{class:'side'},
+    el('h2',{},'Navigator'),
+    el('div',{class:'navgrid'},...S.items.map((x,k)=>{
+      let c='nav-cell';
+      if(S.instant&&x.pick!=null)c+=x.pick===x.q.a?' ok':' no';else if(x.pick!=null)c+=' ans';
+      if(x.flag)c+=' flag';if(k===S.i)c+=' cur';
+      return el('button',{class:c,'aria-label':'Go to question '+(k+1),onclick:()=>{S.i=k;S.confirm=false;render()}},String(k+1))})),
+    el('div',{class:'legend'},S.instant?['Green: correct','Red: incorrect']:['Filled: answered','Dot: marked for review']),
+    el('button',{class:'btn',style:'width:100%',onclick:()=>{if(S.instant||S.items.every(x=>x.pick==null))home();else{S.i=S.items.length-1;S.confirm=true;render()}}},S.instant?'End practice':'Finish exam')
+  );
+  app.replaceChildren(el('div',{class:'exam'},card,side));
+  window.scrollTo({top:0});
+}
+
+function trackMiss(id,ok){
+  let m=store.get('dea_missed',[]);
+  if(ok)m=m.filter(x=>x!==id);else if(!m.includes(id))m.push(id);
+  store.set('dea_missed',m);
+}
+
+function finish(){
+  clearInterval(tick);timerEl.hidden=true;
+  const items=S.items;const correct=items.filter(x=>x.pick===x.q.a).length;
+  const pct=items.length?Math.round(correct/items.length*100):0;
+  if(!S.instant){items.forEach(x=>trackMiss(x.q.id,x.pick===x.q.a));if(S.mode==='mock'){const h=store.get('dea_hist',[]);h.push({pct,at:Date.now()});store.set('dea_hist',h.slice(-20))}}
+  statusEl.textContent='Results';
+  const byD={};items.forEach(x=>{const d=x.q.d;byD[d]=byD[d]||{c:0,n:0};byD[d].n++;if(x.pick===x.q.a)byD[d].c++});
+  const letters='ABCD';
+  let filter='all';
+  const reviewBox=el('div',{class:'review'});
+  function drawReview(){
+    const list=items.filter(x=>filter==='all'||(filter==='miss'&&x.pick!==x.q.a));
+    reviewBox.replaceChildren(...list.map(x=>{
+      const q=x.q,ok=x.pick===q.a,n=items.indexOf(x)+1;
+      return el('div',{class:'rv'+(ok?'':' miss')},
+        el('div',{class:'qmeta'},el('span',{},'Question ',el('b',{},String(n)),ok?' · correct':x.pick==null?' · not answered':' · incorrect'),el('span',{class:'chip'},'Section '+q.d)),
+        el('p',{class:'qtext'},q.q),q.code?el('pre',{},q.code):null,el('p',{class:'qask'},q.ask),
+        el('div',{class:'opts'},...x.order.map((oi,pos)=>el('div',{class:'opt'+(oi===q.a?' right':oi===x.pick?' wrong':'')},el('span',{class:'k'},letters[pos]),el('span',{class:'t'+(isCode(q.o[oi])?' code':'')},q.o[oi])))),
+        el('div',{class:'explain'+(ok?'':' miss')},el('b',{},'Why'),q.e));
+    }));
+  }
+  const tabs=el('div',{class:'tabs'},
+    el('button',{class:'btn',onclick:()=>{filter='miss';drawReview()}},'Show incorrect only'),
+    el('button',{class:'btn',onclick:()=>{filter='all';drawReview()}},'Show all'));
+  drawReview();
+  const pass=pct>=70;
+  app.replaceChildren(
+    el('h1',{},S.mode==='mock'?'Mock exam results':'Practice results'),
+    el('div',{class:'score'},el('div',{class:'big'},pct+'%'),el('div',{},el('div',{},correct+' of '+items.length+' correct'),el('div',{class:'verdict '+(pass?'pass':'fail')},pass?'At or above the 70% working target':'Below the 70% working target'))),
+    el('div',{class:'dombars'},el('h2',{},'By section'),...Object.keys(byD).sort().map(d=>{const r=byD[d],p=Math.round(r.c/r.n*100);return el('div',{class:'dom'},el('span',{},d+'. '+DOMAINS[d].name),el('span',{class:'pct'},r.c+'/'+r.n),el('div',{class:'track'},el('div',{class:'fill'+(p<50?' lo':p<70?' mid':''),style:'width:'+p+'%'})))})),
+    el('div',{class:'qfoot',style:'margin:0 0 24px'},el('button',{class:'btn primary',onclick:()=>start(S.mode==='missed'?'missed':S.mode,'all')},'Try again'),el('button',{class:'btn',onclick:home},'Home')),
+    el('h2',{},'Review'),tabs,reviewBox
+  );
+  window.scrollTo({top:0});
+}
+home();
+</script>
+</body>
+</html>
